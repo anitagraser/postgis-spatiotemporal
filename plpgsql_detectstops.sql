@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.AG_Duration(traj geometry) RETURNS numeric LANGUAGE 'plpgsql' 
+CREATE OR REPLACE FUNCTION AG_Duration(traj geometry) RETURNS numeric LANGUAGE 'plpgsql' 
 AS $BODY$
 BEGIN
 RETURN ST_M(ST_EndPoint(traj))-ST_M(ST_StartPoint(traj));
@@ -65,17 +65,16 @@ IF previously_stopped AND AG_Duration(segment) >= min_duration THEN
    RETURN NEXT; 
 END IF;
 END; 
-
 $BODY$;													  
 
 WITH temp AS (																			  
 SELECT AG_DetectStops(
 	ST_GeometryFromText('LinestringM(1 0 0, 
-						1 1 1, 
-						1 2 2, 1 2 3, 1 2 4, 
-						1 3 5, 1 3 6, 
-						1 4 7,
-					    1 5 8, 1 5 9, 1 5 10, 1 5 11)')
+                                         1 1 1, 
+                                         1 2 2, 1 2 3, 1 2 4, 
+                                         1 3 5, 1 3 6, 
+                                         1 4 7,
+                                         1 5 8, 1 5 9, 1 5 10, 1 5 11)')
 	,0.5 -- max stop diameter
 	,2 -- min stop duration
 ) stop )
